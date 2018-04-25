@@ -1,23 +1,24 @@
 import time
-import random
+import os
 
 import numpy as np
 
 from flask import Flask, jsonify
+
 app = Flask(__name__)
 
-@app.route('/')
-def hello_world():
-    return 'Hello, World!'
-
-@app.route('/api/tmeseries', methods=['GET'])
+@app.route('/api/v1.0/timeseries', methods=['GET'])
 def get_timeseries():
-    temp = 75 + (2 * np.random.rand() - 1)
-    volt = 17 + (3 * np.random.rand() - 1)
-    # a = json.dumps({"time": time.time(), "temp": temp, "volt": volt})
-    return jsonify({"time": time.time(), "temp": temp, "volt": volt})
+    temp = np.round(75 + (2 * np.random.rand() - 1), 2)
+    volt = np.round(17 + (3 * np.random.rand() - 1), 2)
+    return jsonify({'time': time.mktime(time.localtime()), 'temp': temp, 'volt': volt})
+
+@app.route('/')
+def index():
+    return '!', 200
 
 if __name__ == '__main__':
+    port = int(os.getenv('PORT'))
     app.run(host='0.0.0.0',
-            port=8000,
+            port=port,
             debug=True)

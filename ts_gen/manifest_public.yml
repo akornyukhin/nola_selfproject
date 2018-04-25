@@ -1,0 +1,5 @@
+---
+applications:
+- name: timeseries-generator
+  memory: 512M
+
